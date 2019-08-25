@@ -5,10 +5,15 @@ GitHub URL:
 """
 
 
+MOVIES_FILE = "movies.csv"
+
+
 def main():
+
+
     print("Movies To Watch 1.0 - by Kieren Jackson")
     print_menu()
-    selection = menu_selection()
+    menu_answer = menu_selection()
 
 
 def print_menu():
@@ -24,6 +29,20 @@ def menu_selection():
     return answer
 
 
+def movie_list():
+    number = 1
+    movie_file = open(MOVIES_FILE, "r")
+    movies = movie_file.readlines()
+    movie_file.close()
+
+    for n in range(len(movies)):
+        movies[n] = movies[n].split(",")
+
+    for movie in movies:
+        print("{}. {:35} - {:>5} ({})".format(number, movie[0], movie[1], movie[2]))
+        number += 1
+
+6
 if __name__ == '__main__':
     main()
 
