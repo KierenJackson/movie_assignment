@@ -78,11 +78,7 @@ def menu_selection(answer, movies):
                 print("Invalid movie number")
                 movie_number = int_checker()
 
-        marked_status = movies[movie_number][3]
-        if marked_status == "w":
-            print("You have already watched {}".format(movies[movie_number][0]))
-        else:
-            movies[movie_number][3] = "w"
+        watch_movie(movie_number, movies)
 
         print_menu()
         menu_answer = menu_input()
@@ -93,15 +89,21 @@ def menu_selection(answer, movies):
         quit
 
 
+def watch_movie(movie_number, movies):
+    marked_status = movies[movie_number][3]
+    if marked_status == "w":
+        print("You have already watched {}".format(movies[movie_number][0]))
+    else:
+        movies[movie_number][3] = "w"
+        print("{} from {} watched".format(movies[movie_number][0], movies[movie_number][1]))
+
+
 def movie_list(movies):
     number = 1
 
     for movie in movies:
         print("{}. {:35} - {:>5} ({})".format(number, movie[0], movie[1], movie[2]))
         number += 1
-
-
-# def watch_movie():
 
 
 if __name__ == '__main__':
