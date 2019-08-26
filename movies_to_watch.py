@@ -41,6 +41,16 @@ def menu_input():
     return answer
 
 
+def int_checker():
+    while True:
+        try:
+            num = int(input(">>>"))
+        except ValueError:
+            print("Invalid input; enter a valid number")
+        else:
+            return num
+
+
 def menu_selection(answer, movies):
     if answer == "L":
         movie_list(movies)
@@ -49,8 +59,23 @@ def menu_selection(answer, movies):
         menu_selection(menu_answer, movies)
     elif answer == "A":
         pass
+        print_menu()
+        menu_answer = menu_input()
+        menu_selection(menu_answer, movies)
     elif answer == "W":
-        pass
+        print("Enter the number of a movie to mark as watched")
+        movie_number = int_checker()
+        while movie_number < 0 or movie_number >= len(movies):
+            if movie_number < 0:
+                print("Number must be >= 0")
+                movie_number = int_checker()
+            else:
+                print("Invalid movie number")
+                movie_number = int_checker()
+
+        print_menu()
+        menu_answer = menu_input()
+        menu_selection(menu_answer, movies)
     elif answer == "Q":
         print("{} movies saved to movies.csv".format(len(movies)))
         print("Have a nice day :)")
@@ -63,6 +88,10 @@ def movie_list(movies):
     for movie in movies:
         print("{}. {:35} - {:>5} ({})".format(number, movie[0], movie[1], movie[2]))
         number += 1
+
+
+# def watch_movie():
+
 
 
 if __name__ == '__main__':
