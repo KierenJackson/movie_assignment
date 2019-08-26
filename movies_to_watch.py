@@ -102,7 +102,11 @@ def movie_list(movies):
     number = 1
 
     for movie in movies:
-        print("{}. {:35} - {:>5} ({})".format(number, movie[0], movie[1], movie[2]))
+        if movie[3] == "u":
+            watched_status = "*"
+        else:
+            watched_status = ""
+        print("{}. {:1} {:35} - {:>5} ({})".format(number,watched_status, movie[0], movie[1], movie[2]))
         number += 1
 
 
