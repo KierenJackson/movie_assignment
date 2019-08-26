@@ -68,6 +68,7 @@ def year_sorter(movies):
 
 def menu_selection(answer, movies):
     if answer == "L":
+        print(movies)
         movie_list(movies)
         print_menu()
         menu_answer = menu_input()
@@ -78,25 +79,40 @@ def menu_selection(answer, movies):
         menu_answer = menu_input()
         menu_selection(menu_answer, movies)
     elif answer == "W":
-        print("Enter the number of a movie to mark as watched")
-        movie_number = int_checker()
-        while movie_number < 0 or movie_number >= len(movies):
-            if movie_number < 0:
-                print("Number must be >= 0")
-                movie_number = int_checker()
-            else:
-                print("Invalid movie number")
-                movie_number = int_checker()
+        movie_unwatched = watched_movie_checker(movies)
+        if movie_unwatched:
+            print("Enter the number of a movie to mark as watched")
+            movie_number = int_checker()
+            while movie_number < 0 or movie_number >= len(movies):
+                if movie_number < 0:
+                    print("Number must be >= 0")
+                    movie_number = int_checker()
+                else:
+                    print("Invalid movie number")
+                    movie_number = int_checker()
 
-        watch_movie(movie_number, movies)
+            watch_movie(movie_number, movies)
+            print_menu()
+            menu_answer = menu_input()
+            menu_selection(menu_answer, movies)
+        else:
+            print("No more movies to watch!")
+            print_menu()
+            menu_answer = menu_input()
+            menu_selection(menu_answer, movies)
 
-        print_menu()
-        menu_answer = menu_input()
-        menu_selection(menu_answer, movies)
     elif answer == "Q":
         print("{} movies saved to movies.csv".format(len(movies)))
         print("Have a nice day :)")
         quit
+
+
+def watched_movie_checker(movies):
+    for movie in movies:
+        if movie[3] == "u":
+            return True
+
+    return False
 
 
 def watch_movie(movie_number, movies):
