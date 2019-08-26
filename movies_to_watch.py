@@ -4,6 +4,7 @@ Date started: 25/08/19
 GitHub URL:
 """
 
+from operator import itemgetter
 
 MOVIES_FILE = "movies.csv"
 
@@ -30,6 +31,8 @@ def movie_sorter():
     for n in range(len(movies)):
         movies[n] = movies[n].split(",")
 
+    year_sorter(movies)
+
     return movies
 
 
@@ -54,6 +57,13 @@ def int_checker():
             print("Invalid input; enter a valid number")
         else:
             return num
+
+
+def year_sorter(movies):
+    for movie in movies:
+        movie[1] = int(movie[1])
+
+    movies.sort(key=itemgetter(1, 0))
 
 
 def menu_selection(answer, movies):
@@ -99,14 +109,14 @@ def watch_movie(movie_number, movies):
 
 
 def movie_list(movies):
-    number = 1
+    number = 0
 
     for movie in movies:
         if movie[3] == "u":
             watched_status = "*"
         else:
             watched_status = ""
-        print("{}. {:1} {:35} - {:>5} ({})".format(number,watched_status, movie[0], movie[1], movie[2]))
+        print("{}. {:1} {:35} - {:>5} ({})".format(number, watched_status, movie[0], movie[1], movie[2]))
         number += 1
 
 
