@@ -10,16 +10,6 @@ MOVIES_FILE = "movies.csv"
 
 
 def main():
-
-    movies = movie_sorter()
-
-    print("Movies To Watch 1.0 - by Kieren Jackson")
-    print_menu()
-    menu_answer = menu_input()
-    menu_selection(menu_answer, movies)
-
-
-def movie_sorter():
     movies = []
     movie_file = open(MOVIES_FILE, "r")
     unsorted_movies = movie_file.readlines()
@@ -28,10 +18,18 @@ def movie_sorter():
     for movie in range(len(unsorted_movies)):
         movies.append(unsorted_movies[movie].rstrip())
 
+    movies = list_comma_splitter(movies)
+    movies = year_sorter(movies)
+
+    print("Movies To Watch 1.0 - by Kieren Jackson")
+    print_menu()
+    menu_answer = menu_input()
+    menu_selection(menu_answer, movies)
+
+
+def list_comma_splitter(movies):
     for n in range(len(movies)):
         movies[n] = movies[n].split(",")
-
-    year_sorter(movies)
 
     return movies
 
@@ -49,10 +47,10 @@ def menu_input():
     return answer
 
 
-def int_checker():
+def int_checker(text):
     while True:
         try:
-            num = int(input(">>>"))
+            num = int(input(text))
         except ValueError:
             print("Invalid input; enter a valid number")
         else:
@@ -65,10 +63,11 @@ def year_sorter(movies):
 
     movies.sort(key=itemgetter(1, 0))
 
+    return movies
+
 
 def menu_selection(answer, movies):
     if answer == "L":
-        print(movies)
         movie_list(movies)
         print_menu()
         menu_answer = menu_input()
@@ -82,14 +81,15 @@ def menu_selection(answer, movies):
         movie_unwatched = watched_movie_checker(movies)
         if movie_unwatched:
             print("Enter the number of a movie to mark as watched")
-            movie_number = int_checker()
+            int_movie_text = ">>>"
+            movie_number = int_checker(int_movie_text)
             while movie_number < 0 or movie_number >= len(movies):
                 if movie_number < 0:
                     print("Number must be >= 0")
-                    movie_number = int_checker()
+                    movie_number = int_checker(int_movie_text)
                 else:
                     print("Invalid movie number")
-                    movie_number = int_checker()
+                    movie_number = int_checker(int_movie_text)
 
             watch_movie(movie_number, movies)
             print_menu()
@@ -100,7 +100,6 @@ def menu_selection(answer, movies):
             print_menu()
             menu_answer = menu_input()
             menu_selection(menu_answer, movies)
-
     elif answer == "Q":
         print("{} movies saved to movies.csv".format(len(movies)))
         print("Have a nice day :)")
@@ -113,6 +112,26 @@ def watched_movie_checker(movies):
             return True
 
     return False
+
+
+def add_movie(movies):
+    list_append_number = len(movies)
+    movies.append([])
+
+    title = str(input("Title: "))
+    movies[list_append_number].append(title)
+
+    year_int_text = "Year: "
+    year = int_checker(year_int_text)
+    while year < 0:
+        print("Number must be >= 0")
+        year = int_checker(year_int_text)
+    movies[list_append_number].append(year)
+
+    category = str(input("Category: "))
+    movies[list_append_number].append(category)
+
+    movies[list_append_number].append("u")
 
 
 def watch_movie(movie_number, movies):
