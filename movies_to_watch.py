@@ -7,6 +7,7 @@ GitHub URL:
 from operator import itemgetter
 
 MOVIES_FILE = "movies.csv"
+LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def main():
@@ -73,7 +74,9 @@ def menu_selection(answer, movies):
         menu_answer = menu_input()
         menu_selection(menu_answer, movies)
     elif answer == "A":
-        pass
+        add_movie(movies)
+        movies = year_sorter(movies)
+        print(movies)
         print_menu()
         menu_answer = menu_input()
         menu_selection(menu_answer, movies)
@@ -104,6 +107,11 @@ def menu_selection(answer, movies):
         print("{} movies saved to movies.csv".format(len(movies)))
         print("Have a nice day :)")
         quit
+    elif answer == "":
+        print("Invalid menu choice")
+        print_menu()
+        menu_answer = menu_input()
+        menu_selection(menu_answer, movies)
 
 
 def watched_movie_checker(movies):
@@ -115,6 +123,7 @@ def watched_movie_checker(movies):
 
 
 def add_movie(movies):
+
     list_append_number = len(movies)
     movies.append([])
 
