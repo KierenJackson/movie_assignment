@@ -9,6 +9,7 @@ MOVIES_FILE = "movies.csv"
 
 
 def main():
+
     movies = movie_sorter()
 
     print("Movies To Watch 1.0 - by Kieren Jackson")
@@ -18,9 +19,13 @@ def main():
 
 
 def movie_sorter():
+    movies = []
     movie_file = open(MOVIES_FILE, "r")
-    movies = movie_file.readlines()
+    unsorted_movies = movie_file.readlines()
     movie_file.close()
+
+    for movie in range(len(unsorted_movies)):
+        movies.append(unsorted_movies[movie].rstrip())
 
     for n in range(len(movies)):
         movies[n] = movies[n].split(",")
@@ -73,6 +78,12 @@ def menu_selection(answer, movies):
                 print("Invalid movie number")
                 movie_number = int_checker()
 
+        marked_status = movies[movie_number][3]
+        if marked_status == "w":
+            print("You have already watched {}".format(movies[movie_number][0]))
+        else:
+            movies[movie_number][3] = "w"
+
         print_menu()
         menu_answer = menu_input()
         menu_selection(menu_answer, movies)
@@ -91,7 +102,6 @@ def movie_list(movies):
 
 
 # def watch_movie():
-
 
 
 if __name__ == '__main__':
