@@ -107,11 +107,7 @@ def menu_selection(answer, movies):
             menu_answer = menu_input()
             menu_selection(menu_answer, movies)
     elif answer == "Q":
-        movies = int_converter(movies)
-        movie_file_write = open(MOVIES_FILE, "w")
-        for movie in movies:
-            movie_file_write.write(movies[movie])
-        movie_file_write.close()
+        write_movie_file(movies)
         print("{} movies saved to movies.csv".format(len(movies)))
         print("Have a nice day :)")
         quit
@@ -120,6 +116,20 @@ def menu_selection(answer, movies):
         print_menu()
         menu_answer = menu_input()
         menu_selection(menu_answer, movies)
+
+
+def write_movie_file(movies):
+    amount_of_movies = 0
+    movies = int_converter(movies)
+    movie_file_write = open(MOVIES_FILE, "w")
+    for movie in movies:
+        for data in range(len(movie)):
+            movie_file_write.write(movies[amount_of_movies][data])
+            if data != 3:
+                movie_file_write.write(",")
+        movie_file_write.write("\n")
+        amount_of_movies += 1
+    movie_file_write.close()
 
 
 def watched_movie_checker(movies):
