@@ -1,12 +1,14 @@
 """
 Name: Kieren Jackson
 Date started: 25/08/19
-GitHub URL:
+GitHub URL: https://github.com/KierenJackson/movie_assignment
 """
 
 from operator import itemgetter
 
 MOVIES_FILE = "movies.csv"
+WATCHED = "*"
+UNWATCHED = ""
 
 
 def main():
@@ -22,12 +24,14 @@ def main():
     movies = year_sorter(movies)
 
     print("Movies To Watch 1.0 - by Kieren Jackson")
+    print("{} movies loaded".format(len(movies)))
     print_menu()
     menu_answer = menu_input()
     menu_selection(menu_answer, movies)
 
 
 def list_comma_splitter(movies):
+    """Take movie list and split strings by commas and return it"""
     for n in range(len(movies)):
         movies[n] = movies[n].split(",")
 
@@ -35,10 +39,12 @@ def list_comma_splitter(movies):
 
 
 def print_menu():
+    """Print the selection menu"""
     print("Menu: \nL - List movies \nA - Add new movie \nW - Watch a movie \nQ - Quit")
 
 
 def menu_input():
+    """Take users menu input then error check it and return it"""
     answer = input(">>> ").upper()
     while answer not in "LAWQ":
         print("Invalid menu choice")
@@ -48,6 +54,7 @@ def menu_input():
 
 
 def int_checker(text):
+    """Take in text to print in integer input then error check input and return it"""
     while True:
         try:
             num = int(input(text))
@@ -58,6 +65,7 @@ def int_checker(text):
 
 
 def year_sorter(movies):
+    """Take in movie list and sort the list by year then name and return it"""
     for movie in movies:
         movie[1] = int(movie[1])
 
@@ -67,12 +75,14 @@ def year_sorter(movies):
 
 
 def int_converter(movies):
+    """Take movie list and convert years from integers to strings and return it"""
     for movie in movies:
         movie[1] = str(movie[1])
     return movies
 
 
 def menu_selection(answer, movies):
+    """Take in user menu input and select the corresponding selection"""
     if answer == "L":
         movie_list(movies)
         print_menu()
@@ -119,6 +129,7 @@ def menu_selection(answer, movies):
 
 
 def write_movie_file(movies):
+    """Takes in movie list and writes it to movies file"""
     amount_of_movies = 0
     movies = int_converter(movies)
     movie_file_write = open(MOVIES_FILE, "w")
@@ -133,6 +144,7 @@ def write_movie_file(movies):
 
 
 def watched_movie_checker(movies):
+    """Take in movie list to check if all movies are watched and return false"""
     for movie in movies:
         if movie[3] == "u":
             return True
@@ -141,7 +153,7 @@ def watched_movie_checker(movies):
 
 
 def add_movie(movies):
-
+    """Takes in movie list and asks user for inputs about a movie then appends it to movie list"""
     list_append_number = len(movies)
     movies.append([])
 
@@ -162,6 +174,7 @@ def add_movie(movies):
 
 
 def watch_movie(movie_number, movies):
+    """Takes in user movie selection and changes movie from unwatched to watched in movie list"""
     marked_status = movies[movie_number][3]
     if marked_status == "w":
         print("You have already watched {}".format(movies[movie_number][0]))
@@ -171,15 +184,20 @@ def watch_movie(movie_number, movies):
 
 
 def movie_list(movies):
-    number = 0
+    """Takes in movie list and prints out a formatted list of all movies"""
+    list_number = 0
+    movies_watched = 0
+    movies_unwatched = 0
 
     for movie in movies:
         if movie[3] == "u":
-            watched_status = "*"
+            movies_unwatched += 1
+            print("{}. {:1} {:35} - {:>5} ({})".format(list_number, WATCHED, movie[0], movie[1], movie[2]))
         else:
-            watched_status = ""
-        print("{}. {:1} {:35} - {:>5} ({})".format(number, watched_status, movie[0], movie[1], movie[2]))
-        number += 1
+            movies_watched += 1
+            print("{}. {:1} {:35} - {:>5} ({})".format(list_number, UNWATCHED, movie[0], movie[1], movie[2]))
+        list_number += 1
+    print("{} movies watched, {} movies still to watch".format(movies_watched, movies_unwatched))
 
 
 if __name__ == '__main__':
