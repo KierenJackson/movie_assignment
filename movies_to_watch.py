@@ -7,7 +7,6 @@ GitHub URL:
 from operator import itemgetter
 
 MOVIES_FILE = "movies.csv"
-LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def main():
@@ -67,6 +66,12 @@ def year_sorter(movies):
     return movies
 
 
+def int_converter(movies):
+    for movie in movies:
+        movie[1] = str(movie[1])
+    return movies
+
+
 def menu_selection(answer, movies):
     if answer == "L":
         movie_list(movies)
@@ -76,7 +81,6 @@ def menu_selection(answer, movies):
     elif answer == "A":
         add_movie(movies)
         movies = year_sorter(movies)
-        print(movies)
         print_menu()
         menu_answer = menu_input()
         menu_selection(menu_answer, movies)
@@ -93,7 +97,6 @@ def menu_selection(answer, movies):
                 else:
                     print("Invalid movie number")
                     movie_number = int_checker(int_movie_text)
-
             watch_movie(movie_number, movies)
             print_menu()
             menu_answer = menu_input()
@@ -104,6 +107,11 @@ def menu_selection(answer, movies):
             menu_answer = menu_input()
             menu_selection(menu_answer, movies)
     elif answer == "Q":
+        movies = int_converter(movies)
+        movie_file_write = open(MOVIES_FILE, "w")
+        for movie in movies:
+            movie_file_write.write(movies[movie])
+        movie_file_write.close()
         print("{} movies saved to movies.csv".format(len(movies)))
         print("Have a nice day :)")
         quit
